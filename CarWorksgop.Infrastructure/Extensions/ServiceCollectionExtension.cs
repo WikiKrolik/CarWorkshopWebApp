@@ -2,6 +2,7 @@
 using CarWorkshop.Infrastructure.Persistance;
 using CarWorkshop.Infrastructure.Repositiories;
 using CarWorkshop.Infrastructure.Seeders;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,8 +22,15 @@ namespace CarWorkshop.Infrastructure.Extensions
             services.AddDbContext<CarWorkshopDbContext>(options => options.UseSqlServer(
                 configuration.GetConnectionString("CarWorkshop")));
 
+            services.AddDefaultIdentity<IdentityUser>(options => {
+                options.Stores.MaxLengthForKeys = 450;
+            })
+             .AddRoles<IdentityRole>()
+             .AddEntityFrameworkStores<CarWorkshopDbContext>();
+
             services.AddScoped<CarWorkshopSeeder>();
             services.AddScoped<ICarWorkshopRepository, CarWorkshopRepository>();
+            services.AddScoped<ICarWorkshopServiceRepository, CarWorkshopServiceRepository>();
         }
     }
 }
