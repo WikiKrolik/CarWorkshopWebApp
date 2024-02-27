@@ -4,6 +4,8 @@ using CarWorkshop.Application.CarWorkhsop.Commands.CreateCarWorkshop;
 using CarWorkshop.Application.CarWorkhsop.Commands.EditCarWorkshop;
 using CarWorkshop.Application.CarWorkhsop.Queries.GetAllCarWorkshops;
 using CarWorkshop.Application.CarWorkhsop.Queries.GetCarWorkshopByEncodedName;
+using CarWorkshop.Application.CarWorkshopService.Commands;
+using CarWorkshop.Application.CarWorkshopService.Queries;
 using CarWorkshop.MVC.Extensions;
 using CarWorkshop.MVC.Models;
 using MediatR;
@@ -28,6 +30,8 @@ namespace CarWorkshop.MVC.Controllers
             var carWorkshops = await _mediator.Send(new GetAllCarWorkshopsQuery());
             return View(carWorkshops);
         }
+
+
 
         [Authorize(Roles = "Owner")]
         public IActionResult Create()
@@ -83,10 +87,37 @@ namespace CarWorkshop.MVC.Controllers
 
             }
 
-            //await _mediator.Send(command);
+            await _mediator.Send(command);
             this.SetNotification("success", $"Created workshop: {command.Name}");
 
             return RedirectToAction(nameof(Index));
         }
+
+
+        [Authorize(Roles = "Owner")]
+        [HttpPost]
+        [Route("CarWorkshop/CarWorkshopService")]
+        public async Task<IActionResult> CreateCarWorkshopService(CreateCarWorkshopServiceCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+
+            }
+
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("CarWorkshop/{encodedName}/CarWorkshopService")]
+        public async Task<IActionResult> GetCarWorkshopServices(string encodedName)
+        {
+            var data = await _mediator.Send(new GetCarWorkshopServicesQuery() { EncodedName = encodedName });
+            return Ok(data);
+        }
+
     }
+
 }

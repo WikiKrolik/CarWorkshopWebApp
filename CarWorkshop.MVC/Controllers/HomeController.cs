@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using CarWorkshop.MVC.Models;
+using CarWorkshop.Infrastructure.Migrations;
 
 namespace CarWorkshop.MVC.Controllers;
 
@@ -22,6 +23,7 @@ public class HomeController : Controller
     {
         return View();
     }
+
     public IActionResult NoAccess()
     {
         return View();

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CarWorkshop.Application.ApplicationUser
+﻿namespace CarWorkshop.Application.ApplicationUser
 {
     public class CurrentUser
     {
